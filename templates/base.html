@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--  Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>{% block titulo %}{% endblock %}</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'CSS/base.css' %}">
+    <!--<script src="static\JS\base.js"></script>-->
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/icono2.ico' %}">
+</head>
+
+{% block fondo %} <body style="background-image:url(/static/img/fondo.jpg)"> {% endblock fondo %}
+
+<!-- Barra de navegación -->
+{% block header %}
+    <header id="micontainer" class="container text-center"> {% endblock header %}
+<div id="container-navbar" class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a id="logoLPP" class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'img/Logo.png' %}" width="131"
+                                                                           height="65" alt="BeerBones"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menú -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-nav mr-auto pl-2">
+                {% block inicio %}
+                    <a class="nav-item nav-link" href="{% url 'index' %}">Inicio</a> {% endblock inicio %}
+                {% block productos %}
+                    <a class="nav-item nav-link" href="{% url 'productos' %}">Nuestras Cervezas</a> {% endblock productos %}
+                {% block contacto %}
+                    <a class="nav-item nav-link" href="{% url 'contacto' %}">Contacto</a> {% endblock contacto %}
+
+                <!-- Desplegable "Clientes" -->
+                <div class="nav-item dropdown">
+                    {% if user.is_authenticated %}
+                        <a class="nav-item dropdown nav-link dropdown-toggle active text-warning" href="#"
+                           id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false">{{ user.username }}</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'salir' %}">Cerrar sesión</a>
+                        </div>
+                    {% else %}
+
+                        <!-- Formulario login -->
+                        <a class="nav-item dropdown nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Clientes</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <form class="px-4 py-3" method="post" action="{% url "login" %}">{% csrf_token %}
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="DropdownFormEmail1"
+                                           placeholder="Usuario" name="username">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" id="DropdownFormPassword1"
+                                           placeholder="Password" name="password">
+                                </div>
+                                <button type="submit" class="btn btn-dark">Ingresar</button>
+                            </form>
+                            <div class="dropdown-divider"></div>
+                            <a id="registrate" class="dropdown-item" href="{% url 'registro' %}">Cliente nuevo?
+                                Registrate!</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Campo de búsqueda -->
+            <form class="form-inline my-1 my-lg-0 pr-5" method="get" action="/busqueda/">
+                <input class="form-control mr-sm-2" type="search" placeholder="Buscar productos" aria-label="Buscar"
+                       name="busca">
+            </form>
+
+            <!-- Carrito -->
+            <div class="nav-item active">
+                {% with total_items=carrito|length %}
+                    {% if total_items > 0 %}
+                        <div id="fuente_carrito" class="text-light">Mi carrito:</div>
+                        <a href="/detalle/" id="link_carrito" class="text-warning">
+                            {{ total_items }} artículo{{ total_items|pluralize }},
+                            $ {{ carrito.get_precio_total }}
+                        </a>
+                    {% else %}
+                        <div id="fuente_carrito" class="text-light">Carrito vacío</div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+
+        </div>
+    </nav>
+</div>
+</header>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+
+<!-- Bloque para la foto de portada -->
+{% block banner %}{% endblock banner %}
+
+{% block body %}
+
+    <!-- Color de fondo de <body> -->
+    <div id="container-body" class="container">
+        {% block cabecera %}{% endblock cabecera %}
+        {% block contenido %}{% endblock contenido %}
+    </div>
+
+    {% block footer %}
+        <footer id="micontainer" class="container text-light align-middle py-3">
+            Final PP3 2021 &nbsp; - &nbsp; Carolina Bernachea
+        </footer>
+    {% endblock footer %}
+
+{% endblock body %}
+
+
+<!-- Para activar los popover -->
+<script>
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block titulo %}Resultados de la búsqueda{% endblock titulo %}
+
+{% block contenido %}
+
+    {% if res %}
+        <h4 class="pb-1"><small>{{ res|length }} resultado{{ res|pluralize }} para : &nbsp;</small>
+            <b><i>{{ busca }}</i></b></h4>
+        <div class="row">
+            {# Genero una tarjeta por cada producto que arrojen los resultados #}
+            {% for a in res %}
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 py-3 d-flex justify-content-center">
+                    <div id="tarjeta" class="card" style="width: 18rem; height: 531px">
+                        <img class="card-img-top" width="286" height="313" src="{{ a.foto.url }}">
+                        <div class="card-body text-center text-nowrap">
+
+                            {# Si no tiene nombre comercial, muestra la variedad #}
+                            {% if a.nombre_comercial == "" %}
+                                <h5 class="card-title">{{ a.cerveceria }} {{ a.variedad }}</h5>
+                            {% else %}
+                                <h5 class="card-title">{{ a.cerveceria }} - {{ a.nombre_comercial }}</h5>
+                            {% endif %}
+
+                            {# Si no está disponible despliega 'SIN STOCK' en lugar del precio #}
+                            {% if a.disponible %}
+                                <h6>{{ a.presentacion }} &nbsp; &nbsp; ${{ a.precio }}</h6>
+                            {% else %}
+                                <h6 style="display:inline;">{{ a.presentacion }} &nbsp;  &nbsp;</h6>
+                                <h6 class="text-danger" style="display:inline;">SIN STOCK</h6>
+                            {% endif %}
+
+                            <form class="pt-2" action="{% url "agregar_al_carrito" a.id %}"
+                                  method="post"> {% csrf_token %}
+                                <div class="form-group row">
+                                    <div class="col-auto">
+                                        <select id="cantidad" name="cantidad" class="custom-select" required="required">
+                                            {% with ''|center:15 as range %}
+                                                {% for _ in range %}
+                                                    <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                                {% endfor %}
+                                            {% endwith %}
+                                        </select>
+                                    </div>
+                                    <div class="col-auto">
+
+                                        {# Desactivo el botón si el producto no está disponible #}
+                                        {% if a.disponible %}
+                                            <button name="submit" type="submit" class="btn btn-dark">Añadir al carrito
+                                            </button>
+                                        {% else %}
+                                            <button class="btn btn-dark disabled" disabled>Añadir al carrito</button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </form>
+                            <hr>
+                            <button type="button" class="btn btn-outline-dark" data-container="body"
+                                    data-toggle="popover"
+                                    data-placement="auto" data-trigger="focus" data-html="true"
+                                    data-content=
+                                            "<b>Variedad:</b> {{ a.variedad }}
+												<hr>
+								    			<b>Origen:</b> {{ a.cerveceria.ciudad }}, {{ a.cerveceria.pais }}
+								    			<hr>
+								    			<b>Descripción:</b> {{ a.descripcion }}">
+                                Más Información
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h4 class="pb-1"><small>{{ res|length }} resultado{{ res|pluralize }} para : &nbsp;</small>
+            <b><i>{{ busca }}</i></b></h4>
+        <img src="{% static 'img/barney-sin-resultado.png' %}" class="mx-auto d-block w-25 pt-5">
+    {% endif %}
+
+{% endblock contenido %}
+
+		
+		
+		
+
+
+

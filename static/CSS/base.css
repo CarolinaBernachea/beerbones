@@ -1,0 +1,152 @@
+@charset "utf-8";
+
+/*Sobrescribo CSS de bootstrap*/
+
+.text-warning {
+	color: #E57E20 !important
+}
+
+
+/*Base*/
+
+html {
+  height: 100vh;
+}
+
+body, header, footer, div, h1, h2{
+	font-family: 'Baloo Tamma 2', cursive;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+footer{
+	clear:both;
+	text-align: center;
+	font-size: 12px;
+	height: 50px;
+}
+
+#micontainer {
+	background-color: #0D0903;
+    max-width: 1280px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#header-index {
+	background-color: #0D0903;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#container-body {
+	background-color: white;
+    max-width: 1280px;
+ 	padding: 30px;
+    flex: 1;
+}
+
+#container-sin-margen {
+	padding-left: 0px;
+    padding-right: 0px;
+}
+
+/*Base --> Barra de navegación*/
+
+nav button, form input {
+	font-size: 18px !important;
+	vertical-align: middle !important;
+}
+
+nav div a {
+	font-weight: bolder;
+	font-size: 18px;
+}
+
+#container-navbar {
+    max-width: 1280px;
+    flex: 1;
+}
+
+#registrate:hover {
+	background-color: #343A40;
+	color: white;
+}
+
+
+
+/*Catálogo*/
+
+li {
+	list-style-type: none;
+}
+
+#logos {
+	filter: drop-shadow( 0 5px 5px grey);
+}
+
+#tarjeta {
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.18), 0 3px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+
+
+/*Modals verde y rojo*/
+
+#modal-verde {
+	background-color: #D4EDDA;
+	color: #155729;
+}
+
+#modal-verde div {
+	border-bottom-color: #155729
+}
+
+#modal-rojo {
+	background-color: #F8D7DA;
+	color: #A02124;
+}
+
+#modal-rojo div {
+	border-bottom-color: #A02124;
+}
+
+
+
+/*Formularios*/
+
+.form-control:focus{
+	border-color: #929292;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px #B3B3B3;
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px #A7A7A7;
+}
+
+.has-error .form-control:focus{
+	box-shadow: none; 
+	-webkit-box-shadow: none;
+}
+
+
+
+/*Carrito*/
+
+#fuente_carrito {
+	font-weight: bolder;
+	font-size: 18px;
+}
+
+#link_carrito {
+	font-weight: bold;
+	font-size: 14px;
+}
+
+#tarjeta-horizontal {
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.18), 0 3px 10px 0 rgba(0, 0, 0, 0.12);
+	padding-left: 0px;
+    padding-right: 0px;
+}

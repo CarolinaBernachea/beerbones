@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block titulo %}Registro{% endblock %}
+
+
+{% block cabecera %}<h2 class="text-center pt-2">Formulario de registro</h2>{% endblock %}
+
+
+
+{% block contenido %}
+
+    <!--
+        Al ingresar a la página de contacto la variable "usuario_creado" está indefinida
+        por lo que no sucede nada. Al enviar (o no) el correo, la página se recarga y la
+        función en 'views.py' le asigna un valor a "usuario_creado" donde se vuelve True
+        (o False) entrando al if y gatillando el modal correspondiente.
+    -->
+    {% if usuario_creado %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#modal-enviado").modal('show');
+            });
+        </script>
+    {% elif usuario_creado == False %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#modal-no-enviado").modal('show');
+            });
+        </script>
+    {% endif %}
+
+
+    <!-- Modal "Usuario creado" -->
+    <div class="modal fade" id="modal-enviado" tabindex="-1" role="dialog" aria-labelledby="Correo enviado"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" id="modal-verde">
+                <div class="modal-body">
+                    <h5>Usuario creado!</h5>
+                    <hr>
+                    El usuario fue creado con éxito! Ya puedes hacer tu primer pedido y disfrutar nuestras cervezas!
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal "Falló creación de usuario" -->
+    <div class="modal fade" id="modal-no-enviado" tabindex="-1" role="dialog" aria-labelledby="Falló el envío"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" id="modal-rojo">
+                <div class="modal-body">
+                    <h5>El usuario no pudo crearse.</h5>
+                    <hr>
+                    Comprueba tu conexión a internet y que cumplas todos los requisitos, especialmente los de la
+                    contraseña.
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Formulario -->
+
+    <form method="post" class="form-horizontal" id="form-registro">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label></label>
+                        <input id="username" name="username" placeholder="Nombre de Usuario*" type="text"
+                               class="form-control" required="required" aria-describedby="usernameHelpBlock">
+                        <small>
+                            <div class="text-danger">{{ formulario.errors.username }}</div>
+                        </small>
+                        <small><span id="usernameHelpBlock" class="form-text text-muted">150 carácteres como máximo. Únicamente letras, dígitos y @/./+/-/_</span></small>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label></label>
+                        <input id="email" name="email" placeholder="Correo electrónico*" type="email"
+                               class="form-control" required="required" aria-describedby="emailHelpBlock">
+                        <small>
+                            <div class="text-danger">{{ formulario.errors.email }}</div>
+                        </small>
+                        <small><span id="emailHelpBlock" class="form-text text-muted">El correo debe ser único para cada cuenta.</span></small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label></label>
+                        <input id="password1" name="password1" placeholder="Contraseña*" type="password"
+                               class="form-control" aria-describedby="password1HelpBlock" required="required">
+                        <small>
+                            <div class="text-danger">{{ formulario.errors.password1 }}</div>
+                        </small>
+                        <small><span id="password1HelpBlock" class="form-text text-muted">
+							<li>Su contraseña no puede asemejarse a otra información personal.</li>
+							<li>Debe contener al menos 8 caracteres.</li>
+							<li>No puede ser una clave utilizada comúnmente.</li>
+							<li>No puede ser completamente numérica.</li>              
+					</span></small>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label></label>
+                        <input id="password2" name="password2" placeholder="Contraseña (verificación)*" type="password"
+                               class="form-control" aria-describedby="password2HelpBlock" required="required">
+                        <small>
+                            <div class="text-danger">{{ formulario.errors.password2 }}</div>
+                        </small>
+                        <small><span id="password2HelpBlock" class="form-text text-muted">Para verificar, introduzca la misma contraseña anterior.</span></small>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label></label>
+                        <input id="nombre" name="nombre" placeholder="Nombre*" type="text" class="form-control"
+                               required="required">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label></label>
+                        <input id="apellido" name="apellido" placeholder="Apellido*" type="text" class="form-control"
+                               required="required">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label></label>
+                        <input id="direccion" name="direccion" placeholder="Dirección*" type="text" class="form-control"
+                               required="required">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label></label>
+                        <input id="telefono" name="telefono" placeholder="Teléfono*" type="text" class="form-control"
+                               required="required">
+                    </div>
+                </div>
+                <div class="form-group py-3">
+                    <button name="submit" type="submit" class="btn btn-dark">Registrarse</button>
+                </div>
+                <div><small>* Campo requerido</small></div>
+            </div>
+        </div>
+    </form>
+
+{% endblock contenido %}
+
+
+				
+			
+				 
+			
+
+				
+
+

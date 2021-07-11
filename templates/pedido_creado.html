@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block titulo %}Pedido creado!{% endblock %}
+
+
+
+{% block cabecera %}<h2 class="text-center pt-2">Muchas gracias por tu compra!</h2>{% endblock %}
+
+
+
+{% block contenido %}
+
+    <h4 class="text-center pt-3"> Tu número de pedido es el: #{{ pedido.id }}, en breve nos estaremos comunicando
+        contigo para coordinar la entrega!</h4>
+
+    <img src="{% static 'img/duffman-pedido-confirmado.png' %}" class="mx-auto d-block w-25">
+
+{% endblock contenido %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block titulo %}Contacto{% endblock %}
+
+{% block contacto %}
+    <a class="nav-item active nav-link" href="{% url 'contacto' %}">Contacto</a> {% endblock contacto %}
+
+{% block cabecera %}<h2 class="text-center pt-2">Comunicate con nosotros!</h2>{% endblock %}
+
+
+
+{% block contenido %}
+
+    <!--
+        Al ingresar a la página de contacto la variable "correo_enviado" está indefinida
+        por lo que no sucede nada. Al enviar (o no) el correo, la página se recarga y la
+        función en 'views.py' le asigna un valor a "correo_enviado" donde se vuelve True
+        (o False) entrando al if y gatillando el modal correspondiente
+    -->
+    {% if correo_enviado %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#modal-enviado").modal('show');
+            });
+        </script>
+    {% elif correo_enviado == False %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#modal-no-enviado").modal('show');
+            });
+        </script>
+    {% endif %}
+
+
+    <!-- Modal "correo enviado" -->
+    <div class="modal fade" id="modal-enviado" tabindex="-1" role="dialog" aria-labelledby="Correo enviado"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" id="modal-verde">
+                <div class="modal-body">
+                    <h5>Correo enviado!</h5>
+                    <hr>
+                    El correo se envió con éxito. Nos comunicaremos a la brevedad.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal "falló envío" -->
+    <div class="modal fade" id="modal-no-enviado" tabindex="-1" role="dialog" aria-labelledby="Falló el envío"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" id="modal-rojo">
+                <div class="modal-body">
+                    <h5>Fallo el envío</h5>
+                    <hr>
+                    El correo no ha sido enviado. Comprueba tu conexión a internet o inténtalo más tarde.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <form method="post" action=""> {% csrf_token %}
+                <div class="form-group">
+                    <label></label>
+                    {% if user.is_authenticated %}
+                        <input id="nombre" name="nombre" value="{{ user.cliente.nombre }}"
+                               placeholder="Nombre Completo" type="text" class="form-control">
+                    {% else %}
+                        <input id="nombre" name="nombre" placeholder="Nombre Completo" type="text" class="form-control">
+                    {% endif %}
+
+                </div>
+                <div class="form-group">
+                    <label></label>
+                    {% if user.is_authenticated %}
+                        <input id="correo" name="correo" value="{{ user.cliente.email }}"
+                               placeholder="Correo eléctronico*" type="email" class="form-control">
+                    {% else %}
+                        <input id="correo" name="correo" placeholder="Correo eléctronico*" type="email"
+                               required="required" class="form-control">
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label></label>
+                    <input id="asunto" name="asunto" placeholder="Asunto*" type="text" class="form-control"
+                           required="required">
+                </div>
+                <div class="form-group">
+                    <label></label>
+                    <textarea id="mensaje" name="mensaje" placeholder="Escriba su mensaje aquí..." cols="40" rows="6"
+                              required="required" class="form-control"></textarea>
+                </div>
+                <div class="form-group py-3">
+                    <button name="submit" type="submit" class="btn btn-dark">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock contenido %}
+
+

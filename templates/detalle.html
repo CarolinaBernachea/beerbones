@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block titulo %}Carrito de compras{% endblock %}
+{% block cabecera %} <h2 class="text-center pb-4 pt-2">Carrito de compras</h2> {% endblock cabecera %}
+{% block contenido %}
+
+    {% for item in carrito %}
+        {% with producto=item.producto %}
+
+            <div id="tarjeta-horizontal" class="card mb-3 container" style="max-width: 1000px;">
+                <div class="row no-gutters">
+                    <div class="col-2 ">
+                        <div class="row">
+                            <div class="col-9">
+                                <img width="107" height="118" src="{{ producto.foto.url }}" class="card-img">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3 my-auto mx-auto ">
+                        <h6 class="card-title my-auto mx-auto text-center py-1 pr-2">{{ producto }}</h6>
+                        <h6 class="card-title my-auto mx-auto text-center pt-2 pr-2">{{ item.cantidad }} &nbsp;x&nbsp;
+                            ${{ item.precio }}</h6>
+                    </div>
+                    <div class="col-4 my-auto ">
+                        <div class="form-group pt-3 my-auto row mx-auto">
+                            <form class="pl-2 text-center" action="{% url "agregar_al_carrito" producto.id %}"
+                                  method="post"> {% csrf_token %}
+                                <div class="form-group row mx-auto">
+                                    <div class="col-auto pr-1">
+                                        <select id="cantidad" name="cantidad" class="custom-select" required="required">
+                                            {% with ''|center:15 as range %}
+                                                {% for _ in range %}
+                                                    <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                                {% endfor %}
+                                            {% endwith %}
+                                        </select>
+                                    </div>
+                                    {{ item.form_actualizar_cant.override }}
+                                    <div class="col-auto">
+                                        <button name="submit" type="submit" class="btn btn-dark">Actualizar</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-auto mx-auto">
+                                <form action="{% url "eliminar_de_carrito" producto.id %}"
+                                      method="post">{% csrf_token %}
+                                    <button name="submit" type="submit" class="btn btn-danger">Eliminar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 my-auto mx-auto text-center">
+                        <b><h5 class="mx-auto">Subtotal:</h5></b>
+                        <b><h5 class="mx-auto">$ {{ item.precio_total }}</h5></b>
+                    </div>
+
+                </div>
+            </div>
+
+        {% endwith %}
+    {% endfor %}
+
+    <div id="header-index" class="card mb-3 container bg-dark my-auto" style="max-width: 1000px;">
+        <div class="row no-gutters d-flex h-100">
+
+            <div class="col-2 text-center text-light pt-2 pr-5">
+                <h4>TOTAL:</h4>
+            </div>
+            <div class="col-8"></div>
+            <div class="col-2 text-center text-light pt-2 pr-4">
+                <b><h4>${{ carrito.get_precio_total }}</h4></b>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div id="container-sin-margen" class="container mx-auto pt-4 text-right" style="max-width: 1000px;">
+        <a href="{% url "crear_pedido" %}" class="btn btn-dark">Continuar con el pedido</a>
+    </div>
+
+
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block titulo %}Contacto{% endblock %}
+
+{% block contacto %}
+    <a class="nav-item active nav-link" href="{% url 'contacto' %}">Contacto</a> {% endblock contacto %}
+
+{% block cabecera %}<h1 class="text-center pt-2">ERROR 500 - Error interno del servidor</h1>{% endblock %}
+
+
+
+{% block contenido %}
+
+    <h5 class="text-center pt-2">No lloren por el Servidor... ya está muerto...</h5>
+
+    <img src="{% static 'img/bender-500.png' %}" class="mx-auto d-block w-100 pt-5">
+
+{% endblock contenido %}

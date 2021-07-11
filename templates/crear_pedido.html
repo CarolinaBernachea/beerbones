@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block titulo %}
+    Crear pedido
+{% endblock %}
+
+{% block cabecera %} <h2 class="text-center pb-4 pt-2"></h2>{% endblock cabecera %}
+{% block contenido %}
+
+    {% if pedido_exitoso == False %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#modal-no-enviado").modal('show');
+            });
+        </script>
+    {% endif %}
+
+    <!-- Modal "falló envío de pedido" -->
+    <div class="modal fade" id="modal-no-enviado" tabindex="-1" role="dialog" aria-labelledby="Falló el envío"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" id="modal-rojo">
+                <div class="modal-body">
+                    <h5>Fallo la creación del pedido</h5>
+                    <hr>
+                    El pedido no ha sido creado. Comprueba tu conexión a internet o inténtalo más tarde.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-1"></div>
+        <div id="tarjeta" class="col-4 pt-3">
+            <h3>Datos de envío</h3>
+            <br>
+
+            <form>
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input id="nombre" type="text" value="{{ user.cliente.nombre }} {{ user.cliente.apellido }}"
+                           class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="direccion">Dirección:</label>
+                    <input id="direccion" type="text" value="{{ user.cliente.direccion }}" class="form-control"
+                           disabled>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input id="telefono" type="text" value="{{ user.cliente.telefono }}" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="email">e-mail:</label>
+                    <input id="email" type="text" value="{{ user.cliente.email }}" class="form-control" disabled>
+                </div>
+            </form>
+
+        </div>
+
+        <div class="col-1"></div>
+
+        <div id="tarjeta" class="col-5 pt-3">
+
+            <h3>Tu pedido</h3>
+            <br>
+            {% for item in carrito %}
+                {% with producto=item.producto %}
+                    <div class="row">
+                        <div class="col-9 pb-2">
+                            <h6>{{ item.cantidad }} x {{ item.producto }}</h6>
+                        </div>
+                        <div class="col-3 text-right">
+                            <h6>${{ item.precio_total }}</h6>
+                        </div>
+                    </div>
+                {% endwith %}
+            {% endfor %}
+            <hr>
+            <div class="row">
+                <div class="col-6">
+                    <h6><span class="align-bottom">Total:</span></h6>
+                </div>
+                <div class="col-6 text-right">
+                    <b><h6><span class="align-bottom">${{ carrito.get_precio_total }}</span></h6></b>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10 pt-4" style="padding: 0px;">
+            <form method="post" class="order-form text-right">{% csrf_token %}
+                <input id="cliente" name="cliente" value="{{ user.cliente.id }}" placeholder="Nombre" type="hidden"
+                       class="form-control">
+                <button name="submit" type="submit" class="btn btn-dark">Confirmar pedido</button>
+            </form>
+        </div>
+
+    </div>
+
+
+
+
+
+
+{% endblock %}
