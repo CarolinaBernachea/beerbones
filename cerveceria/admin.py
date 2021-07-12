@@ -25,13 +25,13 @@ class PedidoAdmin(admin.ModelAdmin):
 """
    Para que aparezcan los datos de "Cliente" en la vista de usuarios.
 """
-class ClienteInline(admin.StackedInline):
+class ClienteInline(admin.TabularInline):
     model = Cliente
     can_delete = False
 
 
 class UserAdmin(BaseUserAdmin):
-    inlines = (ClienteInline)
+    inlines = [ClienteInline, ]
 
 
 class ClienteAdmin(admin.ModelAdmin):
