@@ -47,7 +47,7 @@ class AgregarAlCarritoForm(forms.Form):
                                     widget = forms.HiddenInput)
 
 
-class CrearPedidoForm(forms.ModelForm):
+class CrearPedidoForm(forms.ModelForm): 
     class Meta:
         model = Pedido
         fields = ['cliente']

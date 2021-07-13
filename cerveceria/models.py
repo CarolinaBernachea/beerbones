@@ -71,8 +71,7 @@ class Cliente(models.Model):
         return consulta[0].contar
 
  
-# Esta función es para sincronizar create() y save() de 'Cliente' 
-# a create() y save() de 'User' y poder registrar ambos a la vez.
+# Esta función es para sincronizar create() y save() de 'Cliente' con el create() y save() de 'User' y registrar ambos a la vez.
 
 @receiver(post_save, sender = User)
 def create_user_cliente(sender, instance, created, **kwargs):

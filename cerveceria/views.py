@@ -21,13 +21,13 @@ def index(request):
 def buscar(request):
 	if "busca" in request.GET and request.GET["busca"]:
 		consulta = request.GET["busca"]
-		keyword = "{}".format(request.GET["busca"])
+		keyword = "{}".format(request.GET["busca"]) # icontains = '%%' en SQL, no casesensitive
 		cerveceria = Producto.objects.filter(cerveceria__nombre__icontains = consulta)
 		pais = Producto.objects.filter(cerveceria__pais__icontains = consulta)
 		variedad = Producto.objects.filter(variedad__icontains = consulta)
 		nombre_comercial = Producto.objects.filter(nombre_comercial__icontains = consulta)
 		# concateno los query sets con | para buscar por varios criterios
-		formulario_agregar_carrito = AgregarAlCarritoForm()
+		formulario_agregar_carrito = AgregarAlCarritoForm() 
 		return render(request, "resultados.html",{"res":cerveceria | variedad | 
 						pais | nombre_comercial, "busca": keyword,
 						'formulario_agregar_carrito': formulario_agregar_carrito }) 
@@ -139,7 +139,6 @@ def detalle_carrito(request):
 # esta función envía un mail tanto al cliente como al mail de contacto de la página
 def enviar_email(request, pedido):
 	carrito = Carrito(request)
-	print('print1')
 	asunto = "Pedido #{}".format(pedido)
 	#datos del cliente
 	user = request.user
@@ -197,9 +196,7 @@ def crear_pedido(request):
 											precio = item['precio'],
 											cantidad = item['cantidad'])
 			try:
-				print('ACA ENTRÓ 1')
 				enviar_email(request, pedido)
-				print('ACA ENTRÓ 2')
 				#limpio el carrito
 				carrito.clear()
 				return render(request, 'pedido_creado.html', {'pedido': pedido})
