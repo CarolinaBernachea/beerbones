@@ -5,11 +5,12 @@ from cerveceria.models import *
 
 # Register your models here.
 
-
 """
    Con la siguiente clase puedo anidar los registros de 
    "DetallePedidos" en "Pedidos"
 """
+
+
 class DetallePedidoInline(admin.TabularInline):
     model = DetallePedido
     can_delete = False
@@ -25,13 +26,15 @@ class PedidoAdmin(admin.ModelAdmin):
 """
    Para que aparezcan los datos de "Cliente" en la vista de usuarios.
 """
-class ClienteInline(admin.TabularInline):
+
+
+class ClienteInline(admin.StackedInline):
     model = Cliente
     can_delete = False
 
 
 class UserAdmin(BaseUserAdmin):
-    inlines = [ClienteInline, ]
+    inlines = (ClienteInline,)
 
 
 class ClienteAdmin(admin.ModelAdmin):
@@ -42,8 +45,10 @@ class ClienteAdmin(admin.ModelAdmin):
 
 
 class ProductoAdmin(admin.ModelAdmin):
-    list_display = ("cerveceria", "nombre_comercial", "variedad","presentacion","disponible")
-    search_fields = ("cerveceria__nombre", "variedad", "nombre_comercial", "cerveceria__pais")
+    list_display = ("cerveceria", "nombre_comercial",
+                    "variedad", "presentacion", "disponible")
+    search_fields = ("cerveceria__nombre", "variedad",
+                     "nombre_comercial", "cerveceria__pais")
     list_filter = ["cerveceria", "variedad", "presentacion"]
     ordering = ["cerveceria", "variedad"]
 
@@ -51,7 +56,7 @@ class ProductoAdmin(admin.ModelAdmin):
 #Debo re-registrar a UserAdmin.
 admin.site.unregister(User)
 
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
 admin.site.register(Presentacion)
 admin.site.register(Cerveceria)
 admin.site.register(Producto, ProductoAdmin)
